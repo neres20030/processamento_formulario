@@ -1,0 +1,17 @@
+h1 {
+
+    display: flex;
+    justify-content: center;
+    }
+    
+    .container {
+        display: flex;
+        justify-content: center; /* Centraliza horizontalmente */
+        align-items: center; /* Centraliza verticalmente */
+        height: 100vh; /* Opcional, se quiser preencher toda a altura da tela */
+    }
+    
+    .container img {
+        max-width: 100%; /* Opcional, para garantir que a imagem não ultrapasse os limites do contêiner */
+    }
+    
