@@ -1,14 +1,17 @@
-# Usar uma imagem oficial do PHP com servidor embutido
-FROM php:8.3-cli
+# Use uma imagem base do PHP com Apache (o que ajuda com PHP)
+FROM php:8.3-apache
 
-# Definir o diretório de trabalho dentro do contêiner
-WORKDIR /app
+# Habilite a reescrita de URLs no Apache
+RUN a2enmod rewrite
 
-# Copiar todos os arquivos do projeto para dentro do contêiner
+# Defina o diretório de trabalho dentro do contêiner
+WORKDIR /var/www/html
+
+# Copiar todos os arquivos do projeto para o diretório do servidor web no contêiner
 COPY . .
 
-# Expor a porta 8000 para acessar o servidor
-EXPOSE 8000
+# Defina a porta do contêiner
+EXPOSE 80
 
-# Comando para rodar o servidor PHP
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "."]
+# Comando para iniciar o Apache no modo foreground
+CMD ["apache2-foreground"]
