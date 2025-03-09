@@ -1,0 +1,8 @@
+{
+    "name": "processamento/formulario",
+    "description": "Aplicação de formulário PHP",
+    "require": {
+      "php": ">=7.4"
+    }
+  }
+  

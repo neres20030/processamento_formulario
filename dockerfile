@@ -1,17 +1,11 @@
-# Use uma imagem base do PHP com Apache (o que ajuda com PHP)
-FROM php:8.3-apache
+# Usando a imagem oficial PHP do Docker
+FROM php:8.0-apache
 
-# Habilite a reescrita de URLs no Apache
-RUN a2enmod rewrite
+# Copiar os arquivos do projeto para o diretório do servidor web
+COPY . /var/www/html/
 
-# Defina o diretório de trabalho dentro do contêiner
-WORKDIR /var/www/html
+# Definir o diretório de trabalho
+WORKDIR /var/www/html/
 
-# Copiar todos os arquivos do projeto para o diretório do servidor web no contêiner
-COPY . .
-
-# Defina a porta do contêiner
+# Expor a porta 80 para o servidor Apache
 EXPOSE 80
-
-# Comando para iniciar o Apache no modo foreground
-CMD ["apache2-foreground"]
