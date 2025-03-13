@@ -1,11 +1,11 @@
-# Escolhe a imagem PHP com suporte ao Apache
+# Escolhe a imagem base do PHP com Apache
 FROM php:7.4-apache
 
-# Instala as dependências necessárias, como MongoDB
-RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mysqli mbstring zip
+# Instala dependências do sistema para o MongoDB
+RUN apt-get update && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev libicu-dev libxml2-dev && \
+    docker-php-ext-install pdo pdo_mysql mysqli mbstring zip
 
-# Instala a extensão MongoDB
+# Instala a extensão do MongoDB
 RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 # Habilita o módulo Apache mod_rewrite (necessário para URLs amigáveis)
@@ -17,5 +17,8 @@ WORKDIR /var/www/html
 # Copia os arquivos do seu projeto para o container
 COPY . /var/www/html
 
-# Exponha a porta 80 para o Apache
-EXPOSE 80
+# Exponha a porta 5000 (usada pela Railway)
+EXPOSE 5000
+
+# Comando para rodar o Apache, ouvindo na porta 5000
+CMD ["apache2-foreground", "-D", "FOREGROUND", "-p", "5000"]
