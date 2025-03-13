@@ -6,32 +6,34 @@ if (file_exists($jsonFile)) {
     $jsonData = file_get_contents($jsonFile);
     $dados = json_decode($jsonData, true);
     if ($dados === null) {
-        echo "Erro ao decodificar JSON existente!<br>";
         $dados = [];
     }
 } else {
-    echo "Arquivo JSON não encontrado, criando um novo.<br>";
     $dados = [];
 }
 
+// Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $novoDado = [
-        "nome" => $_POST['nome'],
-        "sobrenome" => $_POST['sobrenome'],
-        "idade" => $_POST['idade']
+        "nome" => trim($_POST['nome']),
+        "sobrenome" => trim($_POST['sobrenome']),
+        "idade" => trim($_POST['idade'])
     ];
 
-    echo "Recebendo dados: ";
-    print_r($novoDado);
-    echo "<br>";
-
-    $dados[] = $novoDado;
-
-    // Salvar no JSON e testar se ocorreu algum erro
-    if (file_put_contents($jsonFile, json_encode($dados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) === false) {
-        echo "Erro ao salvar no JSON!<br>";
-    } else {
-        echo "Cadastro realizado com sucesso!<br>";
+    // Verifica se a pessoa já existe (mesmo nome e sobrenome)
+    foreach ($dados as $pessoa) {
+        if ($pessoa['nome'] === $novoDado['nome'] &&
+            $pessoa['sobrenome'] === $novoDado['sobrenome']) {
+            echo "<script>alert('Esta pessoa já está cadastrada!'); window.location.href='index.php';</script>";
+            exit();
+        }
     }
+
+    // Se não existir, adiciona e salva
+    $dados[] = $novoDado;
+    file_put_contents($jsonFile, json_encode($dados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+    echo "<script>alert('Cadastro realizado com sucesso!'); window.location.href='index.php';</script>";
+    exit();
 }
 ?>
