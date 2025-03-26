@@ -1,0 +1,7 @@
+<?php
+echo "Hello from PHP on Vercel!";
+
+DEUCERTOOO/
+├── api/
+│   └── index.php        <-- Arquivo PHP que gera o HTML
+└── vercel.json           <-- Configuração do Vercel
